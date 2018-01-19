@@ -8,4 +8,5 @@
 
 10.times do
   Question.create({content: Faker::Food.description, answer: Faker::Food.dish, difficulty_level: rand(1..5), category_id: 1})
+  Category.create({title: Faker::Book.genre})
 end

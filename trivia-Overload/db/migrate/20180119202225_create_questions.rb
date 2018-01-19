@@ -4,7 +4,7 @@ class CreateQuestions < ActiveRecord::Migration[5.1]
       t.string :content
       t.string :answer
       t.integer :difficulty_level
-      t.integer :category_id
+      t.belongs_to :category
     end
   end
 end
