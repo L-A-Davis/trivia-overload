@@ -8,6 +8,7 @@ class Api::V1::QuestionsController < ApplicationController
   def create
     @question = Question.create(question_params)
     render json: @question, status: 201
+  end
 
   def update
     @question = Question.find(params[:id])

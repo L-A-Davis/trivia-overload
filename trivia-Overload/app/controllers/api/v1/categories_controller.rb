@@ -8,6 +8,7 @@ class Api::V1::CategoriesController < ApplicationController
   def create
     @category = Category.create(category_params)
     render json: @category, status: 201
+  end
 
   def update
     @category = Category.find(params[:id])
