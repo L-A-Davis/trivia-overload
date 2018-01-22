@@ -17,6 +17,8 @@ class App {
     App.correctArray = []
 
 
+
+
   }
 
 static getAllCategories(resp) {
@@ -106,6 +108,15 @@ static handleCategorySelection(event) {
   }
 
   static collectStatistics() {
+     let finalStats = {}
+     finalStats.correct_questions = App.currentScore
+     finalStats.user_id = 1
+     // finalStats.correctArray = App.correctArray
+     // finalStats.wrongArray = App.wrongArray
+     console.log(finalStats)
+     Adapter.postGametoDB(finalStats)
+
     //username, App.currentScore, App.correctArray, App.wrongArray
   }
+  
 }

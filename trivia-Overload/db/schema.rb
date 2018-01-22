@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20180122142151) do
 
   create_table "games", force: :cascade do |t|
     t.bigint "user_id"
+    t.integer "correct_questions"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_games_on_user_id"
@@ -29,7 +30,6 @@ ActiveRecord::Schema.define(version: 20180122142151) do
   create_table "games_questions", id: false, force: :cascade do |t|
     t.bigint "game_id", null: false
     t.bigint "question_id", null: false
-    t.boolean "correct"
     t.index ["game_id", "question_id"], name: "index_games_questions_on_game_id_and_question_id"
     t.index ["question_id", "game_id"], name: "index_games_questions_on_question_id_and_game_id"
   end
