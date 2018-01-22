@@ -13,3 +13,12 @@
   width: 1415px;
   position: relative;
 }
+
+.game-over {
+  background: white;
+  border: solid 5px red;
+  height: 350px;
+  width: 350px;
+  z-index: 100;
+  position: absolute;
+}

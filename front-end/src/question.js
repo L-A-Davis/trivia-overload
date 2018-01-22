@@ -1,10 +1,12 @@
 const Question = ( () => {
 
-const questionStore = []
+let questionStore = []
 let ZINDEX = 0
+let questionId = 0
 
 return class Question {
   constructor ({question, correct_answer, incorrect_answers}){
+    this.id = questionId++
     this.question = question
     this.correctAnswer = correct_answer
     this.incorrectAnswers = incorrect_answers
@@ -25,8 +27,7 @@ return class Question {
     let el = document.createElement("div")
     el.setAttribute("class", "question-box")
     el.setAttribute("z-index", ZINDEX++)
-
-    //
+    el.setAttribute("data-id", this.id)
     let questionList = this.shuffle(this.answers)
     let correctIndex = questionList.indexOf(this.correctAnswer)
     el.setAttribute("data-correct", correctIndex)
@@ -45,6 +46,14 @@ return class Question {
 
   static store() {
     return questionStore
+  }
+
+  static resetZIndex() {
+    ZINDEX = 0
+  }
+
+  static clearStore() {
+    questionStore = []
   }
 
 }
