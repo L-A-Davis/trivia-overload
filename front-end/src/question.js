@@ -1,6 +1,7 @@
 const Question = ( () => {
 
 const questionStore = []
+let ZINDEX = 0
 
 return class Question {
   constructor ({question, correct_answer, incorrect_answers}){
@@ -23,14 +24,21 @@ return class Question {
   render() {
     let el = document.createElement("div")
     el.setAttribute("class", "question-box")
+    el.setAttribute("z-index", ZINDEX++)
+
+    //
     let questionList = this.shuffle(this.answers)
     let correctIndex = questionList.indexOf(this.correctAnswer)
     el.setAttribute("data-correct", correctIndex)
+    el.setAttribute("data-action", "answer")
+    el.setAttribute("data-action", "answer")
+    el.style.top = `${(Math.floor(Math.random() * 500))}px`
+    el.style.left = `${(Math.floor(Math.random() * 1215))}px`
     el.innerHTML = `<h2>${this.question} </h2> <ul>
-          <li data-id="0" data-action="answer">${questionList[0]}</li>
-          <li data-id="1" data-action="answer">${questionList[1]}</li>
-          <li data-id="2" data-action="answer">${questionList[2]}</li>
-          <li data-id="3" data-action="answer">${questionList[3]}</li>
+          <li data-id="0">${questionList[0]}</li>
+          <li data-id="1">${questionList[1]}</li>
+          <li data-id="2">${questionList[2]}</li>
+          <li data-id="3">${questionList[3]}</li>
         </ul>`
     return el
   }

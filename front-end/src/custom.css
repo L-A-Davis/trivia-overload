@@ -1,9 +1,15 @@
 .question-box {
-  display: block;
-  background: green;
-  width: 250px;
-  height: 50px;
-  float: left;
-  overflow: auto;
-  margin: 10px;
+  background: blue;
+  width: 200px;
+  height: 100px;
+  position: absolute;
+  border: solid 2px white;
+  overflow:auto;
+}
+
+#questions {
+  border: solid 2px red;
+  height: 600px;
+  width: 1415px;
+  position: relative;
 }

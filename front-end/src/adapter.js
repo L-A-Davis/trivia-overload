@@ -1,5 +1,5 @@
 const BASE_URL = `https://opentdb.com/api.php?`
-const AMOUNT = `amount=20`
+const AMOUNT = `amount=50`
 const CATEGORY = `category=11`
 const DIFFICULTY = `difficulty=medium`
 const CATEGORY_API = `https://opentdb.com/api_category.php`
@@ -7,7 +7,7 @@ const CATEGORY_API = `https://opentdb.com/api_category.php`
 class Adapter {
 
   static getQuestions(category){
-     return fetch(`${BASE_URL}${AMOUNT}&category=${category}&${DIFFICULTY}`).then(resp => resp.json())
+     return fetch(`${BASE_URL}${AMOUNT}&category=${category}&type=multiple`).then(resp => resp.json())
   }
 
   static getCategories() {
