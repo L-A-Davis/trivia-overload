@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :questions
       resources :categories
       resources :users
+      resources :games
     end
   end
 end
