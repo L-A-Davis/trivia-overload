@@ -1,0 +1,9 @@
+.question-box {
+  display: block;
+  background: green;
+  width: 250px;
+  height: 50px;
+  float: left;
+  overflow: auto;
+  margin: 10px;
+}
