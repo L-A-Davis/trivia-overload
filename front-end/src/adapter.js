@@ -26,6 +26,9 @@ class Adapter {
     return Adapter.postToDB(game, DATABASE_LINK)
   }
 
+  static getQuestionsFromDB() {
+    return fetch(QUESTIONS_LINK).then(resp => resp.json())
+  }
 
   static postUserToDB(user) {
     return Adapter.postToDB(user, USER_LINK)
@@ -46,5 +49,19 @@ class Adapter {
      body: JSON.stringify(data)
       }).then(resp => resp.json())
     }
+
+    static patchToDB(id, correct){
+      return fetch(`${QUESTIONS_LINK}/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+       body: JSON.stringify({correct: correct})
+        }).then(resp => resp.json())
+      }
+
+
+
 
   }

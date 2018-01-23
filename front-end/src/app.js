@@ -68,7 +68,31 @@ static handleCategorySelection(event) {
 static handleUserSelection(event) {
   let user = parseInt(event.target.value)
   App.user = user
+  App.userQuestions = []
+  Adapter.getQuestionsFromDB().then(res => res.filter(function(item) {
+    return item.user_id === App.user
+  })).then(res => App.makeQuestionArray(res))
 }
+
+static makeQuestionArray(array) {
+    let correctCount = 0
+    for (let el of array) {
+      App.userQuestions.push(el)
+      if (el.correct) {
+         correctCount += 1
+      }
+    }
+    let correctPercentage = Math.round(correctCount/App.userQuestions.length * 100) * 100 / 100
+    if (correctPercentage) {
+    let percentageDiv = document.getElementById("percentageDiv")
+        percentageDiv.innerHTML = `<p>Correct Percentage: ${correctPercentage}%</p>`
+    }  else {
+      let percentageDiv = document.getElementById("percentageDiv")
+      percentageDiv.innerHTML = `<p> Play More Games! </p>`
+    }
+}
+
+
 
 static newUser(event){
   event.preventDefault()
@@ -115,7 +139,7 @@ static newUser(event){
 
     let timer = setTimeout(function addQuestion() {
       document.getElementById("questions").appendChild(Question.store()[i].render())
-      delay *= .95
+      delay *= 1
       i += 1
       if (i < Question.store().length && App.wrongAnswers > 0) {
         timer = setTimeout(addQuestion, delay)
@@ -176,10 +200,20 @@ static newUser(event){
 
    }
 
+
+
    static postArray(arr, correct) {
+     let usedQuestions = App.userQuestions.map(function (e) {return e.question})
      for(const q of arr) {
+       if (usedQuestions.indexOf(q.question) === -1) {
        Adapter.postQuestionToDB({user_id: App.user, correct: correct, ...q})
      }
+       else {
+         let existingID = App.userQuestions.find(function (item) {return item.question === q.question}).id
+
+      Adapter.patchToDB(existingID, correct)
+       }
+   }
   }
 
 }
