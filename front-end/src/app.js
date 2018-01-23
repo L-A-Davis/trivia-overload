@@ -41,6 +41,7 @@ static excludeCategories() {
 static handleCategorySelection(event) {
   let category = parseInt(event.target.value)
   Adapter.getQuestions(category).then(res => App.getAllQuestions(res.results))
+  App.category = category
 }
 
 
@@ -108,15 +109,17 @@ static handleCategorySelection(event) {
   }
 
   static collectStatistics() {
-     let finalStats = {}
-     finalStats.correct_questions = App.currentScore
-     finalStats.user_id = 1
-     // finalStats.correctArray = App.correctArray
-     // finalStats.wrongArray = App.wrongArray
-     console.log(finalStats)
-     Adapter.postGametoDB(finalStats)
+     let gameStats = {}
+     gameStats.correct_questions = App.currentScore
+     gameStats.user_id = 1
+     Adapter.postGameToDB(gameStats)
+
+     for(const q of App.wrongArray) {
+       Adapter.postQuestionToDB({user_id: 1, correct: false, category_id: App.category, ...q})
+     }
+
 
     //username, App.currentScore, App.correctArray, App.wrongArray
   }
-  
+
 }

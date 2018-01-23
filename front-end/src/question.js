@@ -8,9 +8,11 @@ return class Question {
   constructor ({question, correct_answer, incorrect_answers}){
     this.id = questionId++
     this.question = question
-    this.correctAnswer = correct_answer
-    this.incorrectAnswers = incorrect_answers
-    this.answers = [...incorrect_answers, correct_answer]
+    this.correct_answer = correct_answer
+    this.incorrect_answers_1 = incorrect_answers[0]
+    this.incorrect_answers_2 = incorrect_answers[1]
+    this.incorrect_answers_3 = incorrect_answers[2]
+    this.answers = [incorrect_answers[0], incorrect_answers[1], incorrect_answers[2], correct_answer]
     questionStore.push(this)
   }
 

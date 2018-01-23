@@ -35,7 +35,7 @@ class Api::V1::QuestionsController < ApplicationController
 
   private
   def question_params
-    params.permit(:content, :answer, :difficulty_level, :category_id)
+    params.permit(:question, :correct_answer, :incorrect_answers_1, :incorrect_answers_2, :incorrect_answers_3, :user_id, :correct)
   end
 
 end

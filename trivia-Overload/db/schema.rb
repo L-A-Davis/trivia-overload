@@ -10,14 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180122142151) do
+ActiveRecord::Schema.define(version: 20180122142055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "categories", force: :cascade do |t|
-    t.string "title"
-  end
 
   create_table "games", force: :cascade do |t|
     t.bigint "user_id"
@@ -27,19 +23,15 @@ ActiveRecord::Schema.define(version: 20180122142151) do
     t.index ["user_id"], name: "index_games_on_user_id"
   end
 
-  create_table "games_questions", id: false, force: :cascade do |t|
-    t.bigint "game_id", null: false
-    t.bigint "question_id", null: false
-    t.index ["game_id", "question_id"], name: "index_games_questions_on_game_id_and_question_id"
-    t.index ["question_id", "game_id"], name: "index_games_questions_on_question_id_and_game_id"
-  end
-
   create_table "questions", force: :cascade do |t|
-    t.string "content"
-    t.string "answer"
-    t.integer "difficulty_level"
-    t.bigint "category_id"
-    t.index ["category_id"], name: "index_questions_on_category_id"
+    t.string "question"
+    t.string "correct_answer"
+    t.string "incorrect_answers_1"
+    t.string "incorrect_answers_2"
+    t.string "incorrect_answers_3"
+    t.boolean "correct"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

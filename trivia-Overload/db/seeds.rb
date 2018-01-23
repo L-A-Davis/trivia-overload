@@ -6,7 +6,4 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-10.times do
-  Question.create({content: Faker::Food.description, answer: Faker::Food.dish, difficulty_level: rand(1..5), category_id: 1})
-  Category.create({title: Faker::Book.genre})
-end
+Category.create()
