@@ -12,12 +12,13 @@ class App {
     App.questionsDiv.addEventListener('click', App.handleAnswerSelection)
 
     Adapter.getCategories().then(res => App.getAllCategories(res.trivia_categories))
+    Adapter.getUsers().then(res => App.displayAllUsers(res))
 
     App.wrongArray = []
     App.correctArray = []
 
-
-
+    App.selectUser = document.getElementById('select-user')
+    App.selectUser.addEventListener('change', App.handleUserSelection)
 
   }
 
@@ -34,8 +35,14 @@ static getAllCategories(resp) {
   }
 }
 
-static excludeCategories() {
-
+static displayAllUsers(resp) {
+  for (let el of resp)  {
+      let newUser = new User(el)
+      let option = document.createElement("option")
+      option.text = newUser.name
+      option.value = newUser.id
+      App.selectUser.appendChild(option)
+    }
 }
 
 static handleCategorySelection(event) {
@@ -44,6 +51,10 @@ static handleCategorySelection(event) {
   App.category = category
 }
 
+static handleUserSelection(event) {
+  let user = parseInt(event.target.value)
+  App.user = user
+}
 
   static getAllQuestions(resp) {
     Question.clearStore()
@@ -111,7 +122,7 @@ static handleCategorySelection(event) {
   static collectStatistics() {
      let gameStats = {}
      gameStats.correct_questions = App.currentScore
-     gameStats.user_id = 1
+     gameStats.user_id = App.user
      Adapter.postGameToDB(gameStats)
 
      for(const q of App.wrongArray) {
