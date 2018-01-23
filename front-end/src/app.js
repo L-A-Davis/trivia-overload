@@ -88,7 +88,7 @@ static handleCategorySelection(event) {
       } else {
         console.log("Wrong!", pnode)
         pnode.dataset.action = "wrong"
-        pnode.class = "wrong"
+        pnode.className = "question-box wrong"
         App.wrongAnswers -= 1
         document.getElementById("wrong-answers").innerHTML = App.wrongAnswers
         App.wrongArray.push(Question.store().find(question => question.id == pnode.dataset.id))
