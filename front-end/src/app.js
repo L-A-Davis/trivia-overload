@@ -45,12 +45,14 @@ static displayAllUsers(resp) {
 }
 
 static displayAUser(el) {
-  let newUser = new User(el)
-  let option = document.createElement("option")
-  option.text = newUser.name
-  option.value = newUser.id
-  App.selectUser.appendChild(option)
-  return el
+  if (el.id) {
+    let newUser = new User(el)
+    let option = document.createElement("option")
+    option.text = newUser.name
+    option.value = newUser.id
+    App.selectUser.appendChild(option)
+    return el
+  }
 }
 
 
@@ -71,14 +73,20 @@ static newUser(event){
   let input =  document.getElementById("user_input")
   let value = input.value
   newUserInfo.name = value
-  Adapter.postUserToDB(newUserInfo).then(resp => App.displayAUser(resp))
-  .then(resp => App.setUserInfo(resp))
-  input.value = ""
+  if (value) {
+    Adapter.postUserToDB(newUserInfo).then(resp => App.displayAUser(resp))
+    .then(resp => App.setUserInfo(resp))
+    input.value = ""
+  }
 }
 
   static setUserInfo(info) {
-    App.selectUser.value = info.id
-    App.user = info.id
+    if (info) {
+      App.selectUser.value = info.id
+      App.user = parseInt(info.id)
+    } else {
+      alert("Name Taken")
+    }
   }
 
 
@@ -149,14 +157,13 @@ static newUser(event){
      let gameStats = {}
      gameStats.correct_questions = App.currentScore
      gameStats.user_id = App.user
-     Adapter.postGameToDB(gameStats)
+     Adapter.postGameToDB(gameStats).then(App.postArray(App.wrongArray, false)).then(App.postArray(App.correctArray, true))
 
-     for(const q of App.wrongArray) {
-       Adapter.postQuestionToDB({user_id: App.user, correct: false, ...q})
-     }
+   }
 
-     for(const q of App.correctArray) {
-       Adapter.postQuestionToDB({user_id: App.user, correct: true, ...q})
+   static postArray(arr, correct) {
+     for(const q of arr) {
+       Adapter.postQuestionToDB({user_id: App.user, correct: correct, ...q})
      }
   }
 

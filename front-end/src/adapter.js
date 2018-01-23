@@ -19,11 +19,11 @@ class Adapter {
   }
 
   static postQuestionToDB(question) {
-    Adapter.postToDB(question, QUESTIONS_LINK)
+    return Adapter.postToDB(question, QUESTIONS_LINK)
   }
 
   static postGameToDB(game) {
-    Adapter.postToDB(game, DATABASE_LINK)
+    return Adapter.postToDB(game, DATABASE_LINK)
   }
 
 
