@@ -115,11 +115,12 @@ static handleCategorySelection(event) {
      Adapter.postGameToDB(gameStats)
 
      for(const q of App.wrongArray) {
-       Adapter.postQuestionToDB({user_id: 1, correct: false, category_id: App.category, ...q})
+       Adapter.postQuestionToDB({user_id: 1, correct: false, ...q})
      }
 
-
-    //username, App.currentScore, App.correctArray, App.wrongArray
+     for(const q of App.correctArray) {
+       Adapter.postQuestionToDB({user_id: 1, correct: true, ...q})
+     }
   }
 
 }

@@ -31,7 +31,7 @@ return class Question {
     el.setAttribute("z-index", ZINDEX++)
     el.setAttribute("data-id", this.id)
     let questionList = this.shuffle(this.answers)
-    let correctIndex = questionList.indexOf(this.correctAnswer)
+    let correctIndex = questionList.indexOf(this.correct_answer)
     el.setAttribute("data-correct", correctIndex)
     el.setAttribute("data-action", "answer")
     el.setAttribute("data-action", "answer")
