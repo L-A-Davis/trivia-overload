@@ -126,11 +126,11 @@ static handleUserSelection(event) {
      Adapter.postGameToDB(gameStats)
 
      for(const q of App.wrongArray) {
-       Adapter.postQuestionToDB({user_id: 1, correct: false, ...q})
+       Adapter.postQuestionToDB({user_id: App.user, correct: false, ...q})
      }
 
      for(const q of App.correctArray) {
-       Adapter.postQuestionToDB({user_id: 1, correct: true, ...q})
+       Adapter.postQuestionToDB({user_id: App.user, correct: true, ...q})
      }
   }
 
