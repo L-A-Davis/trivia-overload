@@ -26,6 +26,11 @@ class Adapter {
     Adapter.postToDB(game, DATABASE_LINK)
   }
 
+
+  static postUserToDB(user) {
+    return Adapter.postToDB(user, USER_LINK)
+  }
+
   static getUsers(){
      return fetch(USER_LINK).then(resp => resp.json())
   }
@@ -39,7 +44,7 @@ class Adapter {
           'Content-Type': 'application/json'
         },
      body: JSON.stringify(data)
-      }).then(resp => resp.json()).then(console.log)
+      }).then(resp => resp.json())
     }
 
   }

@@ -20,6 +20,9 @@ class App {
     App.selectUser = document.getElementById('select-user')
     App.selectUser.addEventListener('change', App.handleUserSelection)
 
+    App.newUserForm = document.getElementById("add_user_form")
+    App.newUserForm.addEventListener("submit", App.newUser)
+
   }
 
 static getAllCategories(resp) {
@@ -37,13 +40,19 @@ static getAllCategories(resp) {
 
 static displayAllUsers(resp) {
   for (let el of resp)  {
-      let newUser = new User(el)
-      let option = document.createElement("option")
-      option.text = newUser.name
-      option.value = newUser.id
-      App.selectUser.appendChild(option)
+       App.displayAUser(el)
     }
 }
+
+static displayAUser(el) {
+  let newUser = new User(el)
+  let option = document.createElement("option")
+  option.text = newUser.name
+  option.value = newUser.id
+  App.selectUser.appendChild(option)
+  return el
+}
+
 
 static handleCategorySelection(event) {
   let category = parseInt(event.target.value)
@@ -55,6 +64,23 @@ static handleUserSelection(event) {
   let user = parseInt(event.target.value)
   App.user = user
 }
+
+static newUser(event){
+  event.preventDefault()
+  let newUserInfo = {}
+  let input =  document.getElementById("user_input")
+  let value = input.value
+  newUserInfo.name = value
+  Adapter.postUserToDB(newUserInfo).then(resp => App.displayAUser(resp))
+  .then(resp => App.setUserInfo(resp))
+  input.value = ""
+}
+
+  static setUserInfo(info) {
+    App.selectUser.value = info.id
+    App.user = info.id
+  }
+
 
   static getAllQuestions(resp) {
     Question.clearStore()
