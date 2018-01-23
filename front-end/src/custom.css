@@ -1,10 +1,24 @@
+* {
+  font-family: sans-serif;
+}
+
 .question-box {
   background: blue;
-  width: 200px;
-  height: 100px;
+  width: 300px;
+  height: 200px;
   position: absolute;
   border: solid 2px white;
-  overflow:auto;
+  overflow: hidden;
+  border-radius: 10px;
+  color:white;
+  padding: 10px;
+}
+
+h2 {
+  width: 90%;
+  font-size: 1em;
+  text-align: center;
+  margin: auto;
 }
 
 #questions {
@@ -21,8 +35,31 @@
   width: 350px;
   z-index: 100;
   position: absolute;
+  top: 100px;
+  left: 532px;
+  border-radius: 20px;
+  text-align: center;
 }
 
 div .wrong {
   background: red;
+}
+
+ul {
+  list-style: none;
+  margin: auto;
+  width: 80%;
+  display: inline;
+}
+
+li {
+  background: white;
+  color: blue;
+  margin: 2px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+li:hover {
+  background: green;
 }

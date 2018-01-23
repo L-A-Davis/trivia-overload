@@ -3,6 +3,8 @@ const Question = ( () => {
 let questionStore = []
 let ZINDEX = 0
 let questionId = 0
+let XSTYLE = 1415 - 350//box width
+let YSTYLE = 600 - 200//box width
 
 return class Question {
   constructor ({question, correct_answer, incorrect_answers}){
@@ -35,8 +37,8 @@ return class Question {
     el.setAttribute("data-correct", correctIndex)
     el.setAttribute("data-action", "answer")
     el.setAttribute("data-action", "answer")
-    el.style.top = `${(Math.floor(Math.random() * 500))}px`
-    el.style.left = `${(Math.floor(Math.random() * 1215))}px`
+    el.style.top = `${(Math.floor(Math.random() * YSTYLE))}px`
+    el.style.left = `${(Math.floor(Math.random() * XSTYLE))}px`
     el.innerHTML = `<h2>${this.question} </h2> <ul>
           <li data-id="0">${questionList[0]}</li>
           <li data-id="1">${questionList[1]}</li>
