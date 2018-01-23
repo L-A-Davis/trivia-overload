@@ -14,17 +14,19 @@
 
   </head>
   <body>
-    <select id="select-category">
-      <option disabled selected value> -- Select a Category -- </option>
-    </select>
-    <select id="select-user">
-      <option disabled selected value> -- Select a User -- </option>
-    </select>
-    <form id="add_user_form">
-      <input id="user_input" type="text" name="add-User" placeholder="Or Add a New User"/>
-      <input id = "submit-button" type="submit" value="Submit"/>
-    </form>
-    <button type="button" id="start-game">Start Game</button>
+    <div id="intro-fields">
+      <select id="select-category">
+        <option disabled selected value> -- Select a Category -- </option>
+      </select>
+      <select id="select-user">
+        <option disabled selected value> -- Select a User -- </option>
+      </select>
+      <form id="add_user_form">
+        <input id="user_input" type="text" name="add-User" placeholder="Or Add a New User"/>
+        <input id = "submit-button" type="submit" value="Submit"/>
+      </form>
+      <button type="button" id="start-game">Start Game</button>
+    </div>
     <div id="game-data">
       Score:<div id="score"></div>
       Wrong Answers Remaining:<div id="wrong-answers"></div>

@@ -1,5 +1,6 @@
 * {
   font-family: sans-serif;
+  background-color: #DDEEDD;
 }
 
 .question-box {
@@ -22,7 +23,7 @@ h2 {
 }
 
 #questions {
-  border: solid 2px red;
+  /* border: solid 2px red; */
   height: 600px;
   width: 1415px;
   position: relative;
@@ -62,4 +63,8 @@ li {
 
 li:hover {
   background: green;
+}
+
+#game-data {
+  display: none;
 }

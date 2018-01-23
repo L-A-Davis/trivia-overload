@@ -14,6 +14,9 @@ class App {
     Adapter.getCategories().then(res => App.getAllCategories(res.trivia_categories))
     Adapter.getUsers().then(res => App.displayAllUsers(res))
 
+    App.gameInfo = document.getElementById("game-data")
+    App.introFields = document.getElementById("intro-fields")
+
     App.wrongArray = []
     App.correctArray = []
 
@@ -101,6 +104,8 @@ static newUser(event){
     App.currentScore = 0
     App.wrongAnswers = 3
     App.questionsDiv.innerHTML = ""
+    App.gameInfo.style.display = "block"
+    App.introFields.style.display = "none"
 
     document.getElementById("score").innerHTML = App.currentScore
     document.getElementById("wrong-answers").innerHTML = App.wrongAnswers
@@ -148,9 +153,19 @@ static newUser(event){
     Question.resetZIndex()
     let el = document.createElement("div")
     el.className = "game-over"
-    el.innerHTML = `<h1>Game Over!</h1><p>Your score was: ${App.currentScore}</p>`
+    if (App.currentScore < 50) {
+      el.innerHTML = `<h1>Game Over!</h1><p>Your score was: ${App.currentScore}</p>`
+    } else {
+      el.innerHTML = `<h1>Trivia Legend!</h1><p>You got every question right!</p>`
+    }
     App.questionsDiv.append(el)
+    let qBoxes = document.getElementsByClassName('question-box')
+    for(const el of qBoxes) {
+      el.dataset.action = "complete"
+    }
     App.collectStatistics()
+    App.introFields.style.display = "block"
+    App.gameInfo.style.display = "none"
   }
 
   static collectStatistics() {
