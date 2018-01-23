@@ -12,12 +12,16 @@ class App {
     App.questionsDiv.addEventListener('click', App.handleAnswerSelection)
 
     Adapter.getCategories().then(res => App.getAllCategories(res.trivia_categories))
+    Adapter.getUsers().then(res => App.displayAllUsers(res))
 
     App.wrongArray = []
     App.correctArray = []
 
+    App.selectUser = document.getElementById('select-user')
+    App.selectUser.addEventListener('change', App.handleUserSelection)
 
-
+    App.newUserForm = document.getElementById("add_user_form")
+    App.newUserForm.addEventListener("submit", App.newUser)
 
   }
 
@@ -34,15 +38,48 @@ static getAllCategories(resp) {
   }
 }
 
-static excludeCategories() {
-
+static displayAllUsers(resp) {
+  for (let el of resp)  {
+       App.displayAUser(el)
+    }
 }
+
+static displayAUser(el) {
+  let newUser = new User(el)
+  let option = document.createElement("option")
+  option.text = newUser.name
+  option.value = newUser.id
+  App.selectUser.appendChild(option)
+  return el
+}
+
 
 static handleCategorySelection(event) {
   let category = parseInt(event.target.value)
   Adapter.getQuestions(category).then(res => App.getAllQuestions(res.results))
   App.category = category
 }
+
+static handleUserSelection(event) {
+  let user = parseInt(event.target.value)
+  App.user = user
+}
+
+static newUser(event){
+  event.preventDefault()
+  let newUserInfo = {}
+  let input =  document.getElementById("user_input")
+  let value = input.value
+  newUserInfo.name = value
+  Adapter.postUserToDB(newUserInfo).then(resp => App.displayAUser(resp))
+  .then(resp => App.setUserInfo(resp))
+  input.value = ""
+}
+
+  static setUserInfo(info) {
+    App.selectUser.value = info.id
+    App.user = info.id
+  }
 
 
   static getAllQuestions(resp) {
@@ -111,15 +148,15 @@ static handleCategorySelection(event) {
   static collectStatistics() {
      let gameStats = {}
      gameStats.correct_questions = App.currentScore
-     gameStats.user_id = 1
+     gameStats.user_id = App.user
      Adapter.postGameToDB(gameStats)
 
      for(const q of App.wrongArray) {
-       Adapter.postQuestionToDB({user_id: 1, correct: false, ...q})
+       Adapter.postQuestionToDB({user_id: App.user, correct: false, ...q})
      }
 
      for(const q of App.correctArray) {
-       Adapter.postQuestionToDB({user_id: 1, correct: true, ...q})
+       Adapter.postQuestionToDB({user_id: App.user, correct: true, ...q})
      }
   }
 

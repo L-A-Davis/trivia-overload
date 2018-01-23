@@ -6,6 +6,7 @@ const CATEGORY_API = `https://opentdb.com/api_category.php`
 
 const DATABASE_LINK = `http://localhost:3000/api/v1/games`
 const QUESTIONS_LINK = `http://localhost:3000/api/v1/questions`
+const USER_LINK = `http://localhost:3000/api/v1/users`
 
 class Adapter {
 
@@ -25,6 +26,16 @@ class Adapter {
     Adapter.postToDB(game, DATABASE_LINK)
   }
 
+
+  static postUserToDB(user) {
+    return Adapter.postToDB(user, USER_LINK)
+  }
+
+  static getUsers(){
+     return fetch(USER_LINK).then(resp => resp.json())
+  }
+
+
   static postToDB(data, link){
     return fetch(link, {
       method: 'POST',
@@ -33,7 +44,7 @@ class Adapter {
           'Content-Type': 'application/json'
         },
      body: JSON.stringify(data)
-      }).then(resp => resp.json()).then(console.log)
+      }).then(resp => resp.json())
     }
 
   }
