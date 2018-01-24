@@ -11,17 +11,15 @@
     <script type='text/javascript' src='src/user.js'></script>
     <script type='text/javascript' src='src/index.js'></script>
     <link rel="stylesheet" type="text/css" href="src/test.css">
+    <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
 
 
   </head>
   <body>
+    <div id="logo">Trivia Overload</div>
     <div id="navbar">
       <div id="intro-fields">
-        <div class="menu-item styled-select blue semi-square">
-          <select id="select-category">
-            <option disabled selected value> -- Select a Category -- </option>
-          </select>
-        </div>
+        <div class="step-guide"><p>1</p></div>
         <div class="menu-item styled-select blue semi-square">
           <select id="select-user" class="menu-item styled-select blue semi-square">
             <option disabled selected value> -- Select a User -- </option>
@@ -31,9 +29,14 @@
           <input id="user_input" type="text" name="add-User" placeholder="Or Add a New User"/>
           <input id="submit-button" type="submit" value="Submit"/>
         </form>
+        <div class="step-guide"><p>2</p></div>
+        <div class="menu-item styled-select blue semi-square">
+          <select id="select-category">
+            <option disabled selected value> -- Select a Category -- </option>
+          </select>
+        </div>
+        <div class="step-guide"><p>3</p></div>
         <button type="button" id="start-game">Start Game</button>
-        <div id="percentageDiv" class="menu-item"></div>
-        <div id="high-score-div" class="menu-item"></div>
       </div>
       <div id="game-data">
         <div>Score:</div><div id="score"></div>

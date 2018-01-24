@@ -1,12 +1,19 @@
 body {
-  background-color: #e5eefc;
+  background: radial-gradient(ellipse at center, #e5eefc 0%,#7db9e8 300%);
   font-family: sans-serif;
 }
 
 #logo {
   position: relative;
-  width: 50%;
+  width: 90%;
+  top: 180px;
   margin: auto;
+  text-shadow: -1px -1px 2px #000, 1px 1px 2px #fff;
+	color: #bed3f7;
+	opacity: 0.2;
+	font-family: 'Bungee', sans-serif;
+  font-size: 12em;
+  text-align: center;
 }
 
 #pic {
@@ -128,6 +135,30 @@ hr {
   background: white;
 }
 
+.stat-box {
+  border: solid 5px white;
+  height: 200px;
+  width: 30%;
+  z-index: 100;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  border-radius: 5px;
+  text-align: center;
+  color: #3664af;
+  background: white;
+}
+
+.stat-box p {
+  color: #000;
+}
+
+.stat-box h1 {
+  color: #000;
+}
+
 .game-over:before {
   content: '';
   background-color: #333;
@@ -160,6 +191,27 @@ hr {
   z-index: 150;
 }
 
+.step-guide {
+  display: block;
+  float: left;
+  background-color: #FFF;
+  width: 30px;
+  height: 30px;
+  color: #af2b5c;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  position: relative;
+  border: solid 3px #af2b5c;
+  margin-top: -3px;
+}
+
+.step-guide p {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+}
+
 #game-data {
   display: none;
   color: white;
@@ -184,19 +236,26 @@ hr {
 }
 
 #start-game {
-  display: block;
+  /* display: block;
   position: relative;
   float: right;
   background: #5082d3;
   border-radius: 50%;
   width: 70px;
   height: 70px;
-  margin-right: 30px;
+
   margin-top: -5px;
   border: none;
   color: white;
   font-weight: bold;
-  font-size: .8em;
+  font-size: .8em; */
+  height: 30px;
+  border: none;
+  font-size: .9em;
+  background-color: #5082d3;
+  color: #fff;
+  border-radius: 3px;
+  margin-left: 8px;
 }
 
 #start-game:hover {
@@ -265,4 +324,29 @@ hr {
   color: white;
   font-weight: bold;
   font-size: 1.2em;
+}
+
+.bounce-enter-active {
+ animation: bounce-in .5s;
+}
+
+.bounce-leave-active {
+ animation: bounce-in .5s reverse;
+}
+
+@keyframes bounce-in {
+ 0% {
+   transform: scale(0);
+ }
+ 50% {
+   transform: scale(1.5);
+ }
+ 100% {
+   transform: scale(1);
+ }
+}
+
+#intro-fields {
+  margin: auto;
+  width: 80%;
 }

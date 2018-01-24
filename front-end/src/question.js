@@ -35,7 +35,7 @@ return class Question {
 
   render() {
     let el = document.createElement("div")
-    el.setAttribute("class", "question-box")
+    el.setAttribute("class", "question-box bounce-enter-active")
     el.setAttribute("z-index", ZINDEX++)
     el.setAttribute("data-id", this.id)
     let questionList = this.shuffle(this.answers)

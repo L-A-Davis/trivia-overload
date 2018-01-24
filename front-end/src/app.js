@@ -88,6 +88,17 @@ static handleUserSelection(event) {
   })).then(res => App.makeQuestionArray(res)).then(App.findHighScore())
 }
 
+static createStatBox() {
+  if (document.getElementsByClassName("stat-box")[0]) {
+    document.getElementsByClassName("stat-box")[0].remove()
+  }
+  let statBox = document.createElement("div")
+  statBox.className = "stat-box bounce-enter-active"
+  statBox.innerHTML = `<div id="percentageDiv" class="menu-item"></div>
+    <div id="high-score-div" class="menu-item"></div>`
+  document.getElementById("questions").append(statBox)
+}
+
 static makeQuestionArray(array) {
     let correctCount = 0
     App.redoQuestions = []
