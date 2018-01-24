@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Trivia Overload</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type='text/javascript' src='src/adapter.js'></script>
     <script type='text/javascript' src='src/question.js'></script>
     <script type='text/javascript' src='src/app.js'></script>
@@ -16,19 +17,23 @@
   <body>
     <div id="navbar">
       <div id="intro-fields">
-        <select id="select-category" class="menu-item">
-          <option disabled selected value> -- Select a Category -- </option>
-        </select>
-        <select id="select-user" class="menu-item">
-          <option disabled selected value> -- Select a User -- </option>
-        </select>
+        <div class="menu-item styled-select blue semi-square">
+          <select id="select-category">
+            <option disabled selected value> -- Select a Category -- </option>
+          </select>
+        </div>
+        <div class="menu-item styled-select blue semi-square">
+          <select id="select-user" class="menu-item styled-select blue semi-square">
+            <option disabled selected value> -- Select a User -- </option>
+          </select>
+        </div>
         <form id="add_user_form" class="menu-item">
           <input id="user_input" type="text" name="add-User" placeholder="Or Add a New User"/>
-          <input id = "submit-button" type="submit" value="Submit"/>
+          <input id="submit-button" type="submit" value="Submit"/>
         </form>
         <button type="button" id="start-game">Start Game</button>
-        <div id="percentageDiv">
-        </div>
+        <div id="percentageDiv" class="menu-item"></div>
+        <div id="high-score-div" class="menu-item"></div>
       </div>
       <div id="game-data">
         <div>Score:</div><div id="score"></div>

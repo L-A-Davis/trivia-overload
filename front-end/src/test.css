@@ -207,5 +207,62 @@ hr {
 .menu-item {
   display: block;
   float: left;
-  margin: 10px;
+  margin: 0px 10px;
+}
+
+.styled-select {
+   background: url(../assets/images/arrow.png) no-repeat 96% 0;
+   height: 29px;
+   overflow: hidden;
+   width: 240px;
+}
+
+.styled-select select {
+   background: transparent;
+   border: none;
+   font-size: 14px;
+   height: 29px;
+   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+   width: 268px;
+}
+
+.semi-square {
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+}
+.blue    { background-color: #5082d3; }
+
+.blue select    { color: #fff; }
+
+#user_input {
+  height: 23px;
+  width: 248px;
+  font-size: .9em;
+}
+
+#submit-button {
+  height: 30px;
+  border: none;
+  font-size: .9em;
+  background-color: #5082d3;
+  color: #fff;
+  border-radius: 3px;
+}
+
+#submit-button:hover {
+  background: #bae5ff;
+  color: #5082d3;
+}
+
+#percentageDiv {
+  color: white;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+#high-score-div {
+  color: white;
+  font-weight: bold;
+  font-size: 1.2em;
 }

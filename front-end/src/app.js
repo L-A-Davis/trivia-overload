@@ -32,13 +32,17 @@ static getAllCategories(resp) {
   const excludedCategories = [13,16,19,20,24,25,26,27,29,30]
   for (let el of resp) {
     if (!excludedCategories.includes(el.id)) {
-      let newCat = new Category(el)
-      let option = document.createElement("option")
-      option.text = newCat.name
-      option.value = newCat.id
-      App.selectCategory.appendChild(option)
+      App.addOneCategory(el)
     }
   }
+}
+
+static addOneCategory(el) {
+  let newCat = new Category(el)
+  let option = document.createElement("option")
+  option.text = newCat.name
+  option.value = newCat.id
+  App.selectCategory.appendChild(option)
 }
 
 static displayAllUsers(resp) {
@@ -61,7 +65,12 @@ static displayAUser(el) {
 
 static handleCategorySelection(event) {
   let category = parseInt(event.target.value)
-  Adapter.getQuestions(category).then(res => App.getAllQuestions(res.results))
+  Question.clearStore()
+  if (category === 1) {
+    App.getAllQuestions(App.redoQuestions)
+  } else {
+    Adapter.getQuestions(category).then(res => App.getAllQuestions(res.results))
+  }
   App.category = category
 }
 
@@ -69,19 +78,32 @@ static handleUserSelection(event) {
   let user = parseInt(event.target.value)
   App.user = user
   App.userQuestions = []
+  if ($("#select-category option[value='1']")) {
+    $("#select-category option[value='1']").remove()
+    Question.clearStore()
+    $("#select-category").val($("#select-category option:first").val());
+  }
   Adapter.getQuestionsFromDB().then(res => res.filter(function(item) {
     return item.user_id === App.user
-  })).then(res => App.makeQuestionArray(res))
+  })).then(res => App.makeQuestionArray(res)).then(App.findHighScore())
 }
 
 static makeQuestionArray(array) {
     let correctCount = 0
+    App.redoQuestions = []
     for (let el of array) {
       App.userQuestions.push(el)
       if (el.correct) {
          correctCount += 1
+      } else {
+        App.redoQuestions.push(el)
       }
     }
+
+    if (App.redoQuestions.length > 20) {
+      App.addOneCategory({name: "Redo Questions", id: 1})
+    }
+
     let correctPercentage = Math.round(correctCount/App.userQuestions.length * 100) * 100 / 100
     if (correctPercentage) {
     let percentageDiv = document.getElementById("percentageDiv")
@@ -91,6 +113,23 @@ static makeQuestionArray(array) {
       percentageDiv.innerHTML = `<p> Play More Games! </p>`
     }
 }
+
+  static findHighScore() {
+    Adapter.getGames().then(res => res.filter(function(item) {
+      return item.user_id === App.user
+    })).then(res => App.displayHighScore(res))
+  }
+
+  static displayHighScore(arr) {
+    let highScore = arr.reduce((max, p) => p.correct_questions > max ? p.correct_questions : max, arr[0].correct_questions)
+    let highScoreDiv = document.getElementById("high-score-div")
+    if (highScore) {
+      highScoreDiv.innerHTML = `<p>High Score: ${highScore}</p>`
+    } else {
+      highScoreDiv.innerHTML = `<p>No high score!</p>`
+    }
+
+  }
 
 
 
@@ -118,7 +157,7 @@ static newUser(event){
 
 
   static getAllQuestions(resp) {
-    Question.clearStore()
+    // Question.clearStore()
     for (let value of resp){
        new Question(value)
     }

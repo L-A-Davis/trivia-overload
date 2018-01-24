@@ -38,6 +38,10 @@ class Adapter {
      return fetch(USER_LINK).then(resp => resp.json())
   }
 
+  static getGames(){
+     return fetch(DATABASE_LINK).then(resp => resp.json())
+  }
+
 
   static postToDB(data, link){
     return fetch(link, {
@@ -60,6 +64,9 @@ class Adapter {
        body: JSON.stringify({correct: correct})
         }).then(resp => resp.json())
       }
+
+
+
 
 
 

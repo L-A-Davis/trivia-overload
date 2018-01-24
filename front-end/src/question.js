@@ -7,14 +7,20 @@ let XSTYLE = 1415 - 350//box width
 let YSTYLE = 600 - 200//box width
 
 return class Question {
-  constructor ({question, correct_answer, incorrect_answers}){
+  constructor ({question, correct_answer, incorrect_answers, incorrect_answers_1, incorrect_answers_2, incorrect_answers_3}){
     this.id = questionId++
     this.question = question
     this.correct_answer = correct_answer
-    this.incorrect_answers_1 = incorrect_answers[0]
-    this.incorrect_answers_2 = incorrect_answers[1]
-    this.incorrect_answers_3 = incorrect_answers[2]
-    this.answers = [incorrect_answers[0], incorrect_answers[1], incorrect_answers[2], correct_answer]
+    if (incorrect_answers) {
+      this.incorrect_answers_1 = incorrect_answers[0]
+      this.incorrect_answers_2 = incorrect_answers[1]
+      this.incorrect_answers_3 = incorrect_answers[2]
+    } else {
+      this.incorrect_answers_1 = incorrect_answers_1
+      this.incorrect_answers_2 = incorrect_answers_2
+      this.incorrect_answers_3 = incorrect_answers_3
+    }
+    this.answers = [this.incorrect_answers_1, this.incorrect_answers_2, this.incorrect_answers_3, this.correct_answer]
     questionStore.push(this)
   }
 
