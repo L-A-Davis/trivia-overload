@@ -85,19 +85,10 @@ static handleUserSelection(event) {
   }
   Adapter.getQuestionsFromDB().then(res => res.filter(function(item) {
     return item.user_id === App.user
-  })).then(res => App.makeQuestionArray(res)).then(App.findHighScore())
+  })).then(res => App.makeQuestionArray(res)).then(App.findHighScore()).then(App.createStatBox())
 }
 
-static createStatBox() {
-  if (document.getElementsByClassName("stat-box")[0]) {
-    document.getElementsByClassName("stat-box")[0].remove()
-  }
-  let statBox = document.createElement("div")
-  statBox.className = "stat-box bounce-enter-active"
-  statBox.innerHTML = `<div id="percentageDiv" class="menu-item"></div>
-    <div id="high-score-div" class="menu-item"></div>`
-  document.getElementById("questions").append(statBox)
-}
+
 
 static makeQuestionArray(array) {
     let correctCount = 0
@@ -115,14 +106,8 @@ static makeQuestionArray(array) {
       App.addOneCategory({name: "Redo Questions", id: 1})
     }
 
-    let correctPercentage = Math.round(correctCount/App.userQuestions.length * 100) * 100 / 100
-    if (correctPercentage) {
-    let percentageDiv = document.getElementById("percentageDiv")
-        percentageDiv.innerHTML = `<p>Correct Percentage: ${correctPercentage}%</p>`
-    }  else {
-      let percentageDiv = document.getElementById("percentageDiv")
-      percentageDiv.innerHTML = `<p> Play More Games! </p>`
-    }
+    App.correctPercentage = Math.round(correctCount/App.userQuestions.length * 100) * 100 / 100
+
 }
 
   static findHighScore() {
@@ -132,16 +117,45 @@ static makeQuestionArray(array) {
   }
 
   static displayHighScore(arr) {
-    let highScore = arr.reduce((max, p) => p.correct_questions > max ? p.correct_questions : max, arr[0].correct_questions)
-    let highScoreDiv = document.getElementById("high-score-div")
-    if (highScore) {
-      highScoreDiv.innerHTML = `<p>High Score: ${highScore}</p>`
-    } else {
-      highScoreDiv.innerHTML = `<p>No high score!</p>`
+    App.highScore = 0
+    if (arr) {
+      App.highScore = arr.reduce((max, p) => p.correct_questions > max ? p.correct_questions : max, arr[0].correct_questions)
     }
-
   }
 
+  static createStatBox() {
+    debugger 
+ if (document.getElementsByClassName("stat-box")[0]) {
+      document.getElementsByClassName("stat-box")[0].remove()
+    }
+
+  let statBox = document.createElement("div")
+  statBox.className = "stat-box bounce-enter-active"
+
+  let percentageDiv = document.createElement("div")
+  percentageDiv.className = "menu-item"
+  percentageDiv.id = "percentageDiv"
+
+    if (App.correctPercentage) {
+       percentageDiv.innerHTML = `<p>Correct Percentage: ${App.correctPercentage}%</p>`
+    }  else {
+      percentageDiv.innerHTML = `<p> Play More Games! </p>`
+    }
+
+    let highScoreDiv = document.createElement("div")
+    highScoreDiv.className = "menu-item"
+    highScoreDiv.id = "high-score-div"
+
+      if (App.highScore) {
+        highScoreDiv.innerHTML = `<p>High Score: ${App.highScore}</p>`
+      } else {
+        highScoreDiv.innerHTML = `<p>No high score!</p>`
+      }
+
+    statBox.appendChild(percentageDiv)
+    statBox.appendChild(highScoreDiv)
+    document.getElementById("questions").append(statBox)
+}
 
 
 static newUser(event){
