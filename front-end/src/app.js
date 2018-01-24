@@ -1,6 +1,6 @@
 class App {
   static init() {
-    console.log("Hey There")
+    console.log("Hey There. this is a test")
 
     let startButton = document.getElementById("start-game")
     startButton.addEventListener('click', App.displayQuestions)
