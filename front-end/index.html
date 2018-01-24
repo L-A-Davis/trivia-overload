@@ -9,37 +9,32 @@
     <script type='text/javascript' src='src/category.js'></script>
     <script type='text/javascript' src='src/user.js'></script>
     <script type='text/javascript' src='src/index.js'></script>
-    <link rel="stylesheet" type="text/css" href="src/custom.css">
+    <link rel="stylesheet" type="text/css" href="src/test.css">
 
 
   </head>
   <body>
-    <div id="intro-fields">
-      <select id="select-category">
-        <option disabled selected value> -- Select a Category -- </option>
-      </select>
-      <select id="select-user">
-        <option disabled selected value> -- Select a User -- </option>
-      </select>
-      <form id="add_user_form">
-        <input id="user_input" type="text" name="add-User" placeholder="Or Add a New User"/>
-        <input id = "submit-button" type="submit" value="Submit"/>
-      </form>
-      <button type="button" id="start-game">Start Game</button>
-      <div id="percentageDiv">
+    <div id="navbar">
+      <div id="intro-fields">
+        <select id="select-category" class="menu-item">
+          <option disabled selected value> -- Select a Category -- </option>
+        </select>
+        <select id="select-user" class="menu-item">
+          <option disabled selected value> -- Select a User -- </option>
+        </select>
+        <form id="add_user_form" class="menu-item">
+          <input id="user_input" type="text" name="add-User" placeholder="Or Add a New User"/>
+          <input id = "submit-button" type="submit" value="Submit"/>
+        </form>
+        <button type="button" id="start-game">Start Game</button>
+        <div id="percentageDiv">
+        </div>
+      </div>
+      <div id="game-data">
+        <div>Score:</div><div id="score"></div>
+        <div>Wrong Answers Remaining:</div><div id="wrong-answers"></div>
       </div>
     </div>
-    <div id="game-data">
-      Score:<div id="score"></div>
-      Wrong Answers Remaining:<div id="wrong-answers"></div>
-    </div>
     <div id="questions"></div>
-
-    <!-- <div class="question-box" z-index="16" data-id="16" data-correct="0" data-action="answer" style="top: 69px; left: 379px;"><h2>Which of the following chemicals are found in eggplant seeds? </h2> <ul>
-          <li data-id="0">Nicotine</li>
-          <li data-id="1">Mescaline</li>
-          <li data-id="2">Psilocybin</li>
-          <li data-id="3">Cyanide</li>
-        </ul></div> -->
   </body>
 </html>

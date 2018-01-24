@@ -125,28 +125,30 @@ static newUser(event){
    }
 
   static displayQuestions() {
-    App.currentScore = 0
-    App.wrongAnswers = 3
-    App.questionsDiv.innerHTML = ""
-    App.gameInfo.style.display = "block"
-    App.introFields.style.display = "none"
+    if (App.user && App.category) {
+      App.currentScore = 0
+      App.wrongAnswers = 3
+      App.questionsDiv.innerHTML = ""
+      App.gameInfo.style.display = "block"
+      App.introFields.style.display = "none"
 
-    document.getElementById("score").innerHTML = App.currentScore
-    document.getElementById("wrong-answers").innerHTML = App.wrongAnswers
+      document.getElementById("score").innerHTML = App.currentScore
+      document.getElementById("wrong-answers").innerHTML = App.wrongAnswers
 
-    let i=0
-    let delay = 1000
+      let i=0
+      let delay = 1000
 
-    let timer = setTimeout(function addQuestion() {
-      document.getElementById("questions").appendChild(Question.store()[i].render())
-      delay *= 1
-      i += 1
-      if (i < Question.store().length && App.wrongAnswers > 0) {
-        timer = setTimeout(addQuestion, delay)
-      } else {
-        App.endGame()
-      }
-    }, delay)
+      let timer = setTimeout(function addQuestion() {
+        document.getElementById("questions").appendChild(Question.store()[i].render())
+        delay *= 1
+        i += 1
+        if (i < Question.store().length && App.wrongAnswers > 0) {
+          timer = setTimeout(addQuestion, delay)
+        } else {
+          App.endGame()
+        }
+      }, delay)
+    }
   }
 
   static handleAnswerSelection() {
@@ -177,11 +179,14 @@ static newUser(event){
     Question.resetZIndex()
     let el = document.createElement("div")
     el.className = "game-over"
+    let elTwo = document.createElement("div")
+    elTwo.id = "game-over-text"
     if (App.currentScore < 50) {
-      el.innerHTML = `<h1>Game Over!</h1><p>Your score was: ${App.currentScore}</p>`
+      elTwo.innerHTML = `<h1>Game Over!</h1><hr><p>Your score was: ${App.currentScore}</p>`
     } else {
-      el.innerHTML = `<h1>Trivia Legend!</h1><p>You got every question right!</p>`
+      elTwo.innerHTML = `<h1>Trivia Legend!</h1><hr><p>You got every question right!</p>`
     }
+    el.append(elTwo)
     App.questionsDiv.append(el)
     let qBoxes = document.getElementsByClassName('question-box')
     for(const el of qBoxes) {
