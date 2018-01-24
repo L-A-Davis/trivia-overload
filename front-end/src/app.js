@@ -85,7 +85,7 @@ static handleUserSelection(event) {
   }
   Adapter.getQuestionsFromDB().then(res => res.filter(function(item) {
     return item.user_id === App.user
-  })).then(res => App.makeQuestionArray(res)).then(App.findHighScore()).then(App.createStatBox())
+  })).then(res => App.makeQuestionArray(res)).then(App.findHighScore)
 }
 
 
@@ -113,47 +113,38 @@ static makeQuestionArray(array) {
   static findHighScore() {
     Adapter.getGames().then(res => res.filter(function(item) {
       return item.user_id === App.user
-    })).then(res => App.displayHighScore(res))
+    })).then(res => App.displayHighScore(res)).then(App.createStatBox)
   }
 
   static displayHighScore(arr) {
     App.highScore = 0
-    if (arr) {
+    App.numberofGames = arr.length
+    if (arr.length > 0) {
       App.highScore = arr.reduce((max, p) => p.correct_questions > max ? p.correct_questions : max, arr[0].correct_questions)
     }
   }
 
   static createStatBox() {
-    debugger 
+
  if (document.getElementsByClassName("stat-box")[0]) {
       document.getElementsByClassName("stat-box")[0].remove()
     }
 
+  let userName = App.selectUser.options[App.user].innerText
+
   let statBox = document.createElement("div")
   statBox.className = "stat-box bounce-enter-active"
 
-  let percentageDiv = document.createElement("div")
-  percentageDiv.className = "menu-item"
-  percentageDiv.id = "percentageDiv"
+  let statsDiv = document.createElement("div")
+  statsDiv.className = "menu-item"
+  statsDiv.id = "stats-div"
 
-    if (App.correctPercentage) {
-       percentageDiv.innerHTML = `<p>Correct Percentage: ${App.correctPercentage}%</p>`
-    }  else {
-      percentageDiv.innerHTML = `<p> Play More Games! </p>`
-    }
+  statsDiv.innerHTML = `     <h3>${userName}'s Stats:</h3> <hr>
+                             <p>Correct Percentage: ${App.correctPercentage ? App.correctPercentage : 0}%</p>
+                             <p>High Score: ${App.highScore ? App.highScore : "None"} </p>
+                             <p>Games Played: ${App.numberofGames} </p>`
 
-    let highScoreDiv = document.createElement("div")
-    highScoreDiv.className = "menu-item"
-    highScoreDiv.id = "high-score-div"
-
-      if (App.highScore) {
-        highScoreDiv.innerHTML = `<p>High Score: ${App.highScore}</p>`
-      } else {
-        highScoreDiv.innerHTML = `<p>No high score!</p>`
-      }
-
-    statBox.appendChild(percentageDiv)
-    statBox.appendChild(highScoreDiv)
+    statBox.appendChild(statsDiv)
     document.getElementById("questions").append(statBox)
 }
 
@@ -200,11 +191,11 @@ static newUser(event){
       document.getElementById("wrong-answers").innerHTML = App.wrongAnswers
 
       let i=0
-      let delay = 1000
+      let delay = 3000
 
       let timer = setTimeout(function addQuestion() {
         document.getElementById("questions").appendChild(Question.store()[i].render())
-        delay *= 1
+        delay *= (1 - App.currentScore / 100)
         i += 1
         if (i < Question.store().length && App.wrongAnswers > 0) {
           timer = setTimeout(addQuestion, delay)
@@ -242,7 +233,7 @@ static newUser(event){
   static endGame() {
     Question.resetZIndex()
     let el = document.createElement("div")
-    el.className = "game-over"
+    el.className = "game-over bounce-enter-active"
     let elTwo = document.createElement("div")
     elTwo.id = "game-over-text"
     if (App.currentScore < 50) {
