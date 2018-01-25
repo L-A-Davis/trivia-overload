@@ -14,11 +14,9 @@ class App {
     Adapter.getCategories().then(res => App.getAllCategories(res.trivia_categories))
     Adapter.getUsers().then(res => App.displayAllUsers(res))
 
+
     App.gameInfo = document.getElementById("game-data")
     App.introFields = document.getElementById("intro-fields")
-
-    App.wrongArray = []
-    App.correctArray = []
 
     App.selectUser = document.getElementById('select-user')
     App.selectUser.addEventListener('change', App.handleUserSelection)
@@ -74,15 +72,25 @@ static handleCategorySelection(event) {
   App.category = category
 }
 
+
 static handleUserSelection(event) {
-  let user = parseInt(event.target.value)
-  App.user = user
+  App.user = parseInt(event.target.value)
   App.setUserQuestions()
+  App.handleUser()
+
+}
+
+static handleRepeatUser() {
+  App.user = parseInt(App.selectUser.value)
+  App.handleUser()
+}
+
+
+static handleUser(){
   Adapter.getQuestionsFromDB().then(res => res.filter(function(item) {
     return item.user_id === App.user
   })).then(res => App.makeQuestionArray(res)).then(App.findHighScore)
 }
-
 
 
 static makeQuestionArray(array) {
@@ -185,6 +193,8 @@ static newUser(event){
    }
 
   static displayQuestions() {
+   if (App.user && App.category) {
+
       App.setUpGame()
 
       App.countdown()
@@ -205,9 +215,9 @@ static newUser(event){
         }
       }, delay)
   }
+}
 
   static setUpGame() {
-    if (App.user && App.category) {
       App.currentScore = 0
       App.wrongAnswers = 3
       App.questionsDiv.innerHTML = ""
@@ -218,7 +228,9 @@ static newUser(event){
       document.getElementById("wrong-answers").innerHTML = App.wrongAnswers
 
       App.running = true
-    }
+
+      App.wrongArray = []
+      App.correctArray = []
   }
 
   static countdown() {
@@ -286,6 +298,8 @@ static newUser(event){
     App.collectStatistics()
     App.introFields.style.display = "block"
     App.gameInfo.style.display = "none"
+    $("#select-user").val($("#select-user option:first").val());
+    App.setUserQuestions()
   }
 
   static collectStatistics() {
