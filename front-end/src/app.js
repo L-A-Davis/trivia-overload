@@ -11,6 +11,7 @@ class App {
     App.questionsDiv = document.getElementById('questions')
     App.questionsDiv.addEventListener('click', App.handleAnswerSelection)
     App.questionsDiv.addEventListener('click', App.hideNewQuestionForm)
+    App.questionsDiv.addEventListener('submit', App.addNewQuestion)
 
     Adapter.getCategories().then(res => App.getAllCategories(res.trivia_categories))
     Adapter.getUsers().then(res => App.displayAllUsers(res))
@@ -24,8 +25,8 @@ class App {
     App.newUserForm = document.getElementById("add_user_form")
     App.newUserForm.addEventListener("submit", App.newUser)
 
-    App.newQuestionForm = document.getElementById("new-q-form")
-    App.newQuestionForm.addEventListener("submit", App.addNewQuestion)
+    //App.newQuestionForm = document.getElementById("new-q-form")
+    //App.newQuestionForm.addEventListener("submit", App.addNewQuestion)
 
     App.newQuestionButton = document.getElementById("add-questions")
     App.newQuestionButton.addEventListener('click', App.showNewQuestionForm)
@@ -212,8 +213,25 @@ static newUser(event){
 
 
    static showNewQuestionForm(event) {
-       App.newQFormHolder = document.getElementById("new-q-form-holder")
-       App.newQFormHolder.style.display = "block"
+       //App.newQFormHolder = document.getElementById("new-q-form-holder")
+       //App.newQFormHolder.style.display = "block"
+       let qForm = document.createElement("div")
+       qForm.id = "new-q-form-holder"
+       qForm.className = "form-box bounce-enter-active"
+       qForm.innerHTML =
+           `<div data-action="close" class="closing">X</div>
+       <br>
+         <h2>Submit A New Question</h2>
+         <hr>
+         <form id="new-q-form">
+           <label for="question">Question:</label><br><input type="text" id="question"><br>
+           <label for="correct-answer">Correct Answer:</label><br><input type="text" id="correct-answer"><br>
+           <label for="incorrect-answer-1">Incorrect Answer 1:</label><br><input type="text" id="incorrect-answer-1"><br>
+           <label for="incorrect-answer-2">Incorrect Answer 2:</label><br><input type="text" id="incorrect-answer-2"><br>
+           <label for="incorrect-answer-3">Incorrect Answer 3:</label><br><input type="text" id="incorrect-answer-3"><br>
+           <input type="submit" value="Add Question"></input>
+         </form>`
+      App.questionsDiv.append(qForm)
    }
 
    static hideNewQuestionForm(event) {
@@ -247,7 +265,7 @@ static newUser(event){
        formIncorrect1.value = ""
        formIncorrect2.value = ""
        formIncorrect3.value = ""
-       App.newQFormHolder.style.display = "none"
+       event.target.parentNode.style.display = "none"
      } else {
        alert("Please Fill Out Every Field!")
      }
