@@ -10,10 +10,10 @@ class App {
 
     App.questionsDiv = document.getElementById('questions')
     App.questionsDiv.addEventListener('click', App.handleAnswerSelection)
+    App.questionsDiv.addEventListener('click', App.hideNewQuestionForm)
 
     Adapter.getCategories().then(res => App.getAllCategories(res.trivia_categories))
     Adapter.getUsers().then(res => App.displayAllUsers(res))
-
 
     App.gameInfo = document.getElementById("game-data")
     App.introFields = document.getElementById("intro-fields")
@@ -26,6 +26,12 @@ class App {
 
     App.newQuestionForm = document.getElementById("new-q-form")
     App.newQuestionForm.addEventListener("submit", App.addNewQuestion)
+
+    App.newQuestionButton = document.getElementById("add-questions")
+    App.newQuestionButton.addEventListener('click', App.showNewQuestionForm)
+
+    // App.closeFormButton = document.getElementById("close-form")
+    // App.closeFormButton.addEventListener('click', App.hideNewQuestionForm)
 
   }
 
@@ -145,6 +151,15 @@ static makeQuestionArray(array) {
   let statBox = document.createElement("div")
   statBox.className = "stat-box bounce-enter-active"
 
+  let closeDiv = document.createElement("div")
+  closeDiv.dataset.action = "close"
+  closeDiv.className = "closing"
+  closeDiv.innerText = "X"
+  let divBreak = document.createElement("br")
+
+  statBox.appendChild(closeDiv)
+  statBox.appendChild(divBreak)
+
   let statsDiv = document.createElement("div")
   statsDiv.className = "menu-item"
   statsDiv.id = "stats-div"
@@ -198,6 +213,19 @@ static newUser(event){
     }
    }
 
+
+   static showNewQuestionForm(event) {
+       App.newQFormHolder = document.getElementById("new-q-form-holder")
+       App.newQFormHolder.style.display = "block"
+   }
+
+   static hideNewQuestionForm(event) {
+     if (event.target.dataset.action === "close") {
+       event.target.parentNode.style.display = "none"
+     }
+   }
+
+
    static addNewQuestion(event) {
      event.preventDefault()
 
@@ -222,6 +250,7 @@ static newUser(event){
        formIncorrect1.value = ""
        formIncorrect2.value = ""
        formIncorrect3.value = ""
+       App.newQFormHolder.style.display = "none"
      } else {
        alert("Please Fill Out Every Field!")
      }
@@ -276,6 +305,7 @@ static newUser(event){
       App.questionsDiv.innerHTML = ""
       App.gameInfo.style.display = "block"
       App.introFields.style.display = "none"
+      App.newQuestionButton.style.display = "none"
 
       document.getElementById("score").innerHTML = App.currentScore
       document.getElementById("wrong-answers").innerHTML = App.wrongAnswers
@@ -349,7 +379,8 @@ static newUser(event){
       el.dataset.action = "complete"
     }
     App.collectStatistics()
-    App.introFields.style.display = "block"
+    App.introFields.style.display = "inline"
+    App.newQuestionButton.style.display = "inline"
     App.gameInfo.style.display = "none"
     $("#select-user").val($("#select-user option:first").val());
     App.setUserQuestions()
