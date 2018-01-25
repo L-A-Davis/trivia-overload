@@ -77,12 +77,7 @@ static handleCategorySelection(event) {
 static handleUserSelection(event) {
   let user = parseInt(event.target.value)
   App.user = user
-  App.userQuestions = []
-  if ($("#select-category option[value='1']")) {
-    $("#select-category option[value='1']").remove()
-    Question.clearStore()
-    $("#select-category").val($("#select-category option:first").val());
-  }
+  App.setUserQuestions()
   Adapter.getQuestionsFromDB().then(res => res.filter(function(item) {
     return item.user_id === App.user
   })).then(res => App.makeQuestionArray(res)).then(App.findHighScore)
@@ -102,7 +97,7 @@ static makeQuestionArray(array) {
       }
     }
 
-    if (App.redoQuestions.length > 20) {
+    if (App.redoQuestions.length > 2) {
       App.addOneCategory({name: "Redo Questions", id: 1})
     }
 
@@ -166,8 +161,18 @@ static newUser(event){
     if (info) {
       App.selectUser.value = info.id
       App.user = parseInt(info.id)
+      App.setUserQuestions()
     } else {
       alert("Name Taken")
+    }
+  }
+
+  static setUserQuestions() {
+    App.userQuestions = []
+    if ($("#select-category option[value='1']")) {
+      $("#select-category option[value='1']").remove()
+      Question.clearStore()
+      $("#select-category").val($("#select-category option:first").val());
     }
   }
 
@@ -180,6 +185,28 @@ static newUser(event){
    }
 
   static displayQuestions() {
+      App.setUpGame()
+
+      App.countdown()
+
+      let i=0
+      let delay = 3000
+
+      let timer = setTimeout(function addQuestion() {
+        if (App.running) {
+          document.getElementById("questions").appendChild(Question.store()[i].render())
+          delay *= (1 - App.currentScore / 100)
+          i += 1
+          if (i < Question.store().length && App.wrongAnswers > 0) {
+            timer = setTimeout(addQuestion, delay)
+          } else {
+            App.endGame()
+          }
+        }
+      }, delay)
+  }
+
+  static setUpGame() {
     if (App.user && App.category) {
       App.currentScore = 0
       App.wrongAnswers = 3
@@ -190,20 +217,25 @@ static newUser(event){
       document.getElementById("score").innerHTML = App.currentScore
       document.getElementById("wrong-answers").innerHTML = App.wrongAnswers
 
-      let i=0
-      let delay = 3000
-
-      let timer = setTimeout(function addQuestion() {
-        document.getElementById("questions").appendChild(Question.store()[i].render())
-        delay *= (1 - App.currentScore / 100)
-        i += 1
-        if (i < Question.store().length && App.wrongAnswers > 0) {
-          timer = setTimeout(addQuestion, delay)
-        } else {
-          App.endGame()
-        }
-      }, delay)
+      App.running = true
     }
+  }
+
+  static countdown() {
+    let countNum = document.createElement("div")
+    countNum.id = "count-num"
+    $('#questions').append(countNum)
+    $('#count-num').html(3)
+    let count = 2
+    let countdown = setInterval(function tick() {
+      if(count === 0) {
+        clearInterval(countdown);
+        countNum.remove()
+      } else {
+        $('#count-num').html(count);
+        count--;
+      }
+    }, 1000)
   }
 
   static handleAnswerSelection() {
@@ -226,11 +258,15 @@ static newUser(event){
         App.wrongAnswers -= 1
         document.getElementById("wrong-answers").innerHTML = App.wrongAnswers
         App.wrongArray.push(Question.store().find(question => question.id == pnode.dataset.id))
+        if (App.wrongAnswers <= 0) {
+          App.endGame()
+        }
       }
     }
   }
 
   static endGame() {
+    App.running = false
     Question.resetZIndex()
     let el = document.createElement("div")
     el.className = "game-over bounce-enter-active"

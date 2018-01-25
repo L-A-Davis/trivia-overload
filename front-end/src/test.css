@@ -62,7 +62,7 @@ body {
   position: absolute;
   text-align: center;
   border: solid 5px #fff;
-  box-shadow: 3px 3px 3px #AAA;
+  box-shadow: 3px 3px 3px #333;
   margin: 3px;
 }
 
@@ -358,4 +358,11 @@ hr {
   /* display: none; */
   margin: auto;
   width: 80%;
+}
+
+#count-num {
+  font-family: 'Bungee';
+  font-size: 20em;
+  text-align: center;
+  color: #5082d3;
 }
