@@ -24,7 +24,7 @@ return class Question {
     questionStore.push(this)
   }
 
-  shuffle(a) {
+  static shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [a[i], a[j]] = [a[j], a[i]];
@@ -38,7 +38,7 @@ return class Question {
     el.setAttribute("class", "question-box bounce-enter-active")
     el.setAttribute("z-index", ZINDEX++)
     el.setAttribute("data-id", this.id)
-    let questionList = this.shuffle(this.answers)
+    let questionList = Question.shuffle(this.answers)
     let correctIndex = questionList.indexOf(this.correct_answer)
     el.setAttribute("data-correct", correctIndex)
     el.setAttribute("data-action", "answer")

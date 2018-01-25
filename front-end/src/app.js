@@ -202,9 +202,11 @@ static newUser(event){
       let i=0
       let delay = 3000
 
+      let questionList = Question.shuffle(Question.store())
+
       let timer = setTimeout(function addQuestion() {
         if (App.running) {
-          document.getElementById("questions").appendChild(Question.store()[i].render())
+          document.getElementById("questions").appendChild(questionList[i].render())
           delay *= (1 - App.currentScore / 100)
           i += 1
           if (i < Question.store().length && App.wrongAnswers > 0) {
