@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :questions
+      resources :submitted_questions
       resources :categories
       resources :users
       resources :games

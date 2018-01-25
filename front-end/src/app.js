@@ -24,6 +24,9 @@ class App {
     App.newUserForm = document.getElementById("add_user_form")
     App.newUserForm.addEventListener("submit", App.newUser)
 
+    App.newQuestionForm = document.getElementById("new-q-form")
+    App.newQuestionForm.addEventListener("submit", App.addNewQuestion)
+
   }
 
 static getAllCategories(resp) {
@@ -33,6 +36,8 @@ static getAllCategories(resp) {
       App.addOneCategory(el)
     }
   }
+
+  App.getUserSubmittedQuestions()
 }
 
 static addOneCategory(el) {
@@ -66,6 +71,8 @@ static handleCategorySelection(event) {
   Question.clearStore()
   if (category === 1) {
     App.getAllQuestions(App.redoQuestions)
+  } else if (category > 32) {
+    App.getAllQuestions(App.userSubmittedQuestions)
   } else {
     Adapter.getQuestions(category).then(res => App.getAllQuestions(res.results))
   }
@@ -186,10 +193,54 @@ static newUser(event){
 
 
   static getAllQuestions(resp) {
-    // Question.clearStore()
     for (let value of resp){
        new Question(value)
     }
+   }
+
+   static addNewQuestion(event) {
+     event.preventDefault()
+
+     let newQuestionInfo = {}
+     let formQ = document.getElementById("question")
+     let formCorrect = document.getElementById("correct-answer")
+     let formIncorrect1 = document.getElementById("incorrect-answer-1")
+     let formIncorrect2 = document.getElementById("incorrect-answer-2")
+     let formIncorrect3 = document.getElementById("incorrect-answer-3")
+
+     newQuestionInfo.question = formQ.value
+     newQuestionInfo.correct_answer = formCorrect.value
+     newQuestionInfo.incorrect_answers_1 = formIncorrect1.value
+     newQuestionInfo.incorrect_answers_2 = formIncorrect2.value
+     newQuestionInfo.incorrect_answers_3 = formIncorrect3.value
+     newQuestionInfo.user_id = App.user
+
+     if (newQuestionInfo.question && newQuestionInfo.correct_answer && newQuestionInfo.incorrect_answers_1 && newQuestionInfo.incorrect_answers_2 && newQuestionInfo.incorrect_answers_3) {
+       Adapter.postSubmittedQuestionToDB(newQuestionInfo).then(App.addUserCategories)
+       formQ.value = ""
+       formCorrect.value = ""
+       formIncorrect1.value = ""
+       formIncorrect2.value = ""
+       formIncorrect3.value = ""
+     } else {
+       alert("Please Fill Out Every Field!")
+     }
+   }
+
+   static getUserSubmittedQuestions() {
+    Adapter.getSubmittedQuestionsFromDB().then(function(res) {
+       App.userSubmittedQuestions = res
+       if (App.userSubmittedQuestions.length) {
+         App.addOneCategory({name: "User Submitted Questions", id: 33})
+       }
+     })
+   }
+
+   static addUserCategories(question) {
+     App.userSubmittedQuestions.push(question)
+     if (App.userSubmittedQuestions.length === 1) {
+       App.addOneCategory({name: "User Submitted Questions", id: 33})
+     }
    }
 
   static displayQuestions() {

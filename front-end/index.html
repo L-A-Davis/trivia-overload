@@ -38,11 +38,25 @@
         <div class="step-guide"><p>3</p></div>
         <button type="button" id="start-game">Start Game</button>
       </div>
+      <button type="button" id="add-questions">Add Questions</button>
       <div id="game-data">
         <div class="blue-label">Score:</div><div id="score" class="blue-label"></div>
         <div class="red-label">Wrong Answers Remaining:</div><div id="wrong-answers" class="red-label"></div>
       </div>
     </div>
-    <div id="questions"></div>
+    <div id="questions">
+      <div id="new-q-form-holder" class="form-box bounce-enter-active">
+        <h2>Submit A New Question</h2>
+        <hr>
+        <form id="new-q-form">
+          <label for="question">Question:</label><br><input type="text" id="question"><br>
+          <label for="correct-answer">Correct Answer:</label><br><input type="text" id="correct-answer"><br>
+          <label for="incorrect-answer-1">Incorrect Answer 1:</label><br><input type="text" id="incorrect-answer-1"><br>
+          <label for="incorrect-answer-2">Incorrect Answer 2:</label><br><input type="text" id="incorrect-answer-2"><br>
+          <label for="incorrect-answer-3">Incorrect Answer 3:</label><br><input type="text" id="incorrect-answer-3"><br>
+          <input type="submit" value="Add Question"></input>
+        </form>
+      </div>
+    </div>
   </body>
 </html>

@@ -3,4 +3,5 @@ class User < ApplicationRecord
 
   has_many :games
   has_many :questions
+  has_many :submitted_questions
 end
