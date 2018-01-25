@@ -27,6 +27,15 @@ class App {
     App.newQuestionForm = document.getElementById("new-q-form")
     App.newQuestionForm.addEventListener("submit", App.addNewQuestion)
 
+    App.addQButton = document.getElementById("add-questions")
+    App.addQButton.addEventListener("click", App.ohGodNo)
+  }
+
+  static ohGodNo() {
+    console.log(event)
+    if (event.target.tagName === "BUTTON") {
+      console.log("hey")
+    }
   }
 
 static getAllCategories(resp) {

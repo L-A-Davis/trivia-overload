@@ -369,7 +369,7 @@ hr {
 #add-questions {
   float: right;
   margin-right: 40px;
-  display: block;
+  display: inline;
   border: none;
   background: white;
   height: 30px;
