@@ -1,6 +1,5 @@
 class App {
   static init() {
-    console.log("Hey There. this is a test")
 
     let startButton = document.getElementById("start-game")
     startButton.addEventListener('click', App.displayQuestions)
@@ -24,9 +23,6 @@ class App {
 
     App.newUserForm = document.getElementById("add_user_form")
     App.newUserForm.addEventListener("submit", App.newUser)
-
-    //App.newQuestionForm = document.getElementById("new-q-form")
-    //App.newQuestionForm.addEventListener("submit", App.addNewQuestion)
 
     App.newQuestionButton = document.getElementById("add-questions")
     App.newQuestionButton.addEventListener('click', App.showNewQuestionForm)
@@ -75,8 +71,10 @@ static handleCategorySelection(event) {
   Question.clearStore()
   if (category === 1) {
     App.getAllQuestions(App.redoQuestions)
-  } else if (category > 32) {
+  } else if (category === 33) {
     App.getAllQuestions(App.userSubmittedQuestions)
+  } else if (category > 33) {
+    App.getAllQuestions(App.subQsObject[category])
   } else {
     Adapter.getQuestions(category).then(res => App.getAllQuestions(res.results))
   }
@@ -213,8 +211,7 @@ static newUser(event){
 
 
    static showNewQuestionForm(event) {
-       //App.newQFormHolder = document.getElementById("new-q-form-holder")
-       //App.newQFormHolder.style.display = "block"
+       if (!document.getElementById("new-q-form-holder")) {
        let qForm = document.createElement("div")
        qForm.id = "new-q-form-holder"
        qForm.className = "form-box bounce-enter-active"
@@ -232,11 +229,12 @@ static newUser(event){
            <input type="submit" value="Add Question"></input>
          </form>`
       App.questionsDiv.append(qForm)
+    }
    }
 
    static hideNewQuestionForm(event) {
      if (event.target.dataset.action === "close") {
-       event.target.parentNode.style.display = "none"
+       event.target.parentNode.remove()
      }
    }
 
@@ -265,7 +263,7 @@ static newUser(event){
        formIncorrect1.value = ""
        formIncorrect2.value = ""
        formIncorrect3.value = ""
-       event.target.parentNode.style.display = "none"
+       event.target.parentNode.remove()
      } else {
        alert("Please Fill Out Every Field!")
      }
@@ -275,15 +273,37 @@ static newUser(event){
     Adapter.getSubmittedQuestionsFromDB().then(function(res) {
        App.userSubmittedQuestions = res
        if (App.userSubmittedQuestions.length) {
+         App.addUserSubmittedCategories()
          App.addOneCategory({name: "User Submitted Questions", id: 33})
        }
      })
+   }
+
+   static addUserSubmittedCategories() {
+     App.subQsObject = {}
+
+     for(const q of App.userSubmittedQuestions) {
+       App.subQsObject[q.user_id + 33] ? App.subQsObject[q.user_id + 33].push(q) : App.subQsObject[q.user_id + 33] = [q]
+     }
+
+     for(const i in App.subQsObject) {
+       if (i > 33) {
+         let userObj = User.store().find(function(user) { return user.id === (i - 33) })
+         App.addOneCategory({name: `${userObj.name}'s Questions`, id: i})
+       }
+     }
    }
 
    static addUserCategories(question) {
      App.userSubmittedQuestions.push(question)
      if (App.userSubmittedQuestions.length === 1) {
        App.addOneCategory({name: "User Submitted Questions", id: 33})
+     }
+
+     App.subQsObject[question.user_id + 33] ? App.subQsObject[question.user_id + 33].push(question) : App.subQsObject[question.user_id + 33] = [question]
+     if (App.subQsObject[question.user_id + 33].length === 1) {
+       let userObj = User.store().find(function(user) { return user.id === (question.user_id) })
+       App.addOneCategory({name: `${userObj.name}'s Questions`, id: question.user_id + 33})
      }
    }
 
